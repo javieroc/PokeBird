@@ -46,34 +46,45 @@ fun AppUI(controller: LifecycleCameraController) {
             )
         }
 
-        // Buttons
         Row(
             modifier = Modifier
-                .padding(48.dp),
-            horizontalArrangement = Arrangement.spacedBy(32.dp),
+                .padding(top = 46.dp),
+                // .fillMaxSize(),
+            horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Button(
-                onClick = { /* Capture logic */ },
-                shape = CircleShape,
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF00C3E3),
-                    contentColor = Color.White
-                ),
-                modifier = Modifier.size(64.dp)
+            DPad(onDirection = { direction ->
+                // Handle direction input
+            })
+
+            Column(
+                modifier = Modifier
+                    .padding(start = 46.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text("A", color = Color.White, fontSize = 30.sp)
-            }
-            Button(
-                onClick = { /* Cancel logic */ },
-                shape = CircleShape,
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF414548),
-                    contentColor = Color.White
-                ),
-                modifier = Modifier.size(64.dp)
-            ) {
-                Text("B", color = Color.White, fontSize = 30.sp)
+                Button(
+                    onClick = { /* Capture logic */ },
+                    shape = CircleShape,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFF00C3E3),
+                        contentColor = Color.White
+                    ),
+                    modifier = Modifier.size(64.dp)
+                ) {
+                    Text("A", fontSize = 30.sp)
+                }
+                Button(
+                    onClick = { /* Cancel logic */ },
+                    shape = CircleShape,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFF414548),
+                        contentColor = Color.White
+                    ),
+                    modifier = Modifier.size(64.dp)
+                ) {
+                    Text("B", fontSize = 30.sp)
+                }
             }
         }
     }
