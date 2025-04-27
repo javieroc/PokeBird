@@ -1,4 +1,4 @@
-package com.app.pokebird
+package com.app.pokebird.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

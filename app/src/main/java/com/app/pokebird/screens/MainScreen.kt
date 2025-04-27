@@ -1,4 +1,4 @@
-package com.app.pokebird
+package com.app.pokebird.screens
 
 import androidx.camera.view.LifecycleCameraController
 import androidx.compose.foundation.background
@@ -22,9 +22,16 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.app.pokebird.components.CameraPreview
+import com.app.pokebird.components.DPad
+
 
 @Composable
-fun AppUI(controller: LifecycleCameraController) {
+fun MainScreen(
+        controller: LifecycleCameraController,
+        onNavigateToPhotoGallery: () -> Unit,
+        onCapturePhoto: () -> Unit,
+    ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -36,7 +43,7 @@ fun AppUI(controller: LifecycleCameraController) {
             modifier = Modifier
                 .size(width = 360.dp, height = 480.dp)
                 .clip(RoundedCornerShape(16.dp))
-                .border(30.dp, Color.LightGray, RoundedCornerShape(16.dp))
+                .border(20.dp, Color.LightGray, RoundedCornerShape(16.dp))
         ) {
             CameraPreview(
                 controller = controller,
@@ -64,7 +71,7 @@ fun AppUI(controller: LifecycleCameraController) {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Button(
-                    onClick = { /* Capture logic */ },
+                    onClick = { onCapturePhoto() },
                     shape = CircleShape,
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color(0xFF00C3E3),
@@ -75,7 +82,7 @@ fun AppUI(controller: LifecycleCameraController) {
                     Text("A", fontSize = 30.sp)
                 }
                 Button(
-                    onClick = { /* Cancel logic */ },
+                    onClick = { onNavigateToPhotoGallery() },
                     shape = CircleShape,
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color(0xFF414548),

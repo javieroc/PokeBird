@@ -1,4 +1,4 @@
-package com.app.pokebird
+package com.app.pokebird.components
 
 import androidx.camera.view.LifecycleCameraController
 import androidx.camera.view.PreviewView

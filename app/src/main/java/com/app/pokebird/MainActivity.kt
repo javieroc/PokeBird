@@ -15,6 +15,7 @@ import androidx.camera.view.LifecycleCameraController
 import androidx.compose.runtime.remember
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.app.pokebird.ui.theme.PokeBirdTheme
 
 
@@ -36,8 +37,15 @@ class MainActivity : ComponentActivity() {
                         )
                     }
                 }
+                val viewModel = viewModel<MainViewModel>()
 
-                AppUI(controller)
+                NavigationStack(
+                    controller,
+                    viewModel,
+                    onCapturePhoto = {
+                        takePhoto(controller, viewModel::onTakePhoto)
+                    }
+                )
             }
         }
     }
