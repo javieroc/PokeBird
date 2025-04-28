@@ -5,6 +5,7 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.camera.core.ImageCapture.OnImageCapturedCallback
@@ -60,6 +61,12 @@ class MainActivity : ComponentActivity() {
                 override fun onCaptureSuccess(image: ImageProxy) {
                     super.onCaptureSuccess(image)
                     onPhotoTaken(image.toBitmap())
+
+                    Toast.makeText(
+                        applicationContext,
+                        "Picture taken!",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
 
                 override fun onError(exception: ImageCaptureException) {

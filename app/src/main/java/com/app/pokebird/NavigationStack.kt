@@ -1,11 +1,9 @@
 package com.app.pokebird
 
-import android.graphics.Bitmap
 import androidx.camera.view.LifecycleCameraController
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -38,7 +36,12 @@ fun NavigationStack(
         }
         composable<Gallery> {
             val images by viewModel.bitmaps.collectAsState()
-            PhotoGallery(bitmaps = images, modifier = Modifier)
+            PhotoGallery(
+                bitmaps = images,
+                onNavigateToMainScreen = {
+                    navController.navigate(route = Main)
+                }
+            )
         }
     }
 }
