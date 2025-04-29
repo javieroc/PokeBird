@@ -1,8 +1,10 @@
 package com.app.pokebird
 
 import android.Manifest
+import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.Matrix
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -13,6 +15,7 @@ import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.ImageProxy
 import androidx.camera.view.CameraController
 import androidx.camera.view.LifecycleCameraController
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -39,6 +42,9 @@ class MainActivity : ComponentActivity() {
                     }
                 }
                 val viewModel = viewModel<MainViewModel>()
+                LaunchedEffect(Unit) {
+                    viewModel.loadPhotos(applicationContext)
+                }
 
                 NavigationStack(
                     controller,
@@ -53,14 +59,27 @@ class MainActivity : ComponentActivity() {
 
     private fun takePhoto(
         controller: LifecycleCameraController,
-        onPhotoTaken: (Bitmap) -> Unit,
+        onPhotoTaken: (context: Context, Bitmap) -> Unit,
     ) {
         controller.takePicture(
             ContextCompat.getMainExecutor(applicationContext),
             object : OnImageCapturedCallback() {
                 override fun onCaptureSuccess(image: ImageProxy) {
                     super.onCaptureSuccess(image)
-                    onPhotoTaken(image.toBitmap())
+                    val matrix = Matrix().apply {
+                        postRotate(image.imageInfo.rotationDegrees.toFloat())
+                    }
+                    val rotatedBitmap = Bitmap.createBitmap(
+                        image.toBitmap(),
+                        0,
+                        0,
+                        image.width,
+                        image.height,
+                        matrix,
+                        true
+                    )
+
+                    onPhotoTaken(applicationContext, rotatedBitmap)
 
                     Toast.makeText(
                         applicationContext,
