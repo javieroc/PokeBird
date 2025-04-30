@@ -43,12 +43,13 @@ class MainActivity : ComponentActivity() {
                 }
                 val viewModel = viewModel<MainViewModel>()
                 LaunchedEffect(Unit) {
-                    viewModel.loadPhotos(applicationContext)
+                    viewModel.loadPhotoFileNames(applicationContext)
                 }
 
                 NavigationStack(
                     controller,
                     viewModel,
+                    applicationContext,
                     onCapturePhoto = {
                         takePhoto(controller, viewModel::onTakePhoto)
                     }

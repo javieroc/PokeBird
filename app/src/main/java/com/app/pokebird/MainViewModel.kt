@@ -17,6 +17,9 @@ class MainViewModel: ViewModel() {
     private val _bitmaps = MutableStateFlow<List<Bitmap>>(emptyList())
     val bitmaps = _bitmaps.asStateFlow()
 
+    private val _fileNames = MutableStateFlow<List<String>>(emptyList())
+    val fileNames = _fileNames.asStateFlow()
+
     fun onTakePhoto(context: Context, bitmap: Bitmap) {
         val formatter = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault())
         val timestamp = formatter.format(Date())
@@ -42,6 +45,11 @@ class MainViewModel: ViewModel() {
             }
         }
         _bitmaps.value = loadedBitmaps
+    }
+
+    fun loadPhotoFileNames(context: Context) {
+        val photoNames = context.fileList().filter { it.endsWith(".png") }
+        _fileNames.value = photoNames
     }
 
     private fun saveBitmapToInternalStorage(context: Context, bitmap: Bitmap, filename: String): Boolean {

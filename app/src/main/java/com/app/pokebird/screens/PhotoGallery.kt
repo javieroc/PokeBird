@@ -1,7 +1,6 @@
 package com.app.pokebird.screens
 
-import android.graphics.Bitmap
-import androidx.compose.foundation.Image
+import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -19,13 +18,15 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.unit.dp
+import coil3.compose.AsyncImage
+import java.io.File
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PhotoGallery(
-    bitmaps: List<Bitmap>,
+    imageFileNames: List<String>,
+    context: Context,
     onNavigateToMainScreen: () -> Unit,
 ) {
     Surface(
@@ -57,9 +58,10 @@ fun PhotoGallery(
                 contentPadding = PaddingValues(16.dp),
                 modifier = Modifier
             ) {
-                items(bitmaps) { bitmap ->
-                    Image(
-                        bitmap = bitmap.asImageBitmap(),
+                items(imageFileNames) { fileName ->
+                    val imageFile = File(context.filesDir, fileName)
+                    AsyncImage(
+                        model = imageFile,
                         contentDescription = null,
                         modifier = Modifier
                     )

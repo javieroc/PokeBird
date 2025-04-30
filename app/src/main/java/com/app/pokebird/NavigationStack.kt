@@ -1,5 +1,6 @@
 package com.app.pokebird
 
+import android.content.Context
 import androidx.camera.view.LifecycleCameraController
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -21,6 +22,7 @@ object Gallery
 fun NavigationStack(
     controller: LifecycleCameraController,
     viewModel: MainViewModel,
+    context: Context,
     onCapturePhoto: () -> Unit
 ) {
     val navController = rememberNavController()
@@ -35,9 +37,10 @@ fun NavigationStack(
             )
         }
         composable<Gallery> {
-            val images by viewModel.bitmaps.collectAsState()
+            val fileNames by viewModel.fileNames.collectAsState()
             PhotoGallery(
-                bitmaps = images,
+                imageFileNames = fileNames,
+                context = context,
                 onNavigateToMainScreen = {
                     navController.navigate(route = Main)
                 }
