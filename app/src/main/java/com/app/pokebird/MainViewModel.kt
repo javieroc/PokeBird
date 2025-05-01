@@ -2,7 +2,6 @@ package com.app.pokebird
 
 import android.content.Context
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +14,6 @@ import java.util.Locale
 class MainViewModel: ViewModel() {
 
     private val _bitmaps = MutableStateFlow<List<Bitmap>>(emptyList())
-    val bitmaps = _bitmaps.asStateFlow()
 
     private val _fileNames = MutableStateFlow<List<String>>(emptyList())
     val fileNames = _fileNames.asStateFlow()
@@ -26,25 +24,8 @@ class MainViewModel: ViewModel() {
         val filename = "photo_${timestamp}.png"
         if (saveBitmapToInternalStorage(context, bitmap, filename)) {
             _bitmaps.value += bitmap
+            loadPhotoFileNames(context)
         }
-    }
-
-    fun loadPhotos(context: Context) {
-        val loadedBitmaps = mutableListOf<Bitmap>()
-        for (fileName in context.fileList()) {
-            if (fileName.endsWith(".png")) {
-                try {
-                    context.openFileInput(fileName).use { inputStream ->
-                        BitmapFactory.decodeStream(inputStream)?.let {
-                            loadedBitmaps.add(it)
-                        }
-                    }
-                } catch (e: IOException) {
-                    Log.e("PhotoLoad", "Error loading photo: $fileName", e)
-                }
-            }
-        }
-        _bitmaps.value = loadedBitmaps
     }
 
     fun loadPhotoFileNames(context: Context) {
@@ -62,5 +43,13 @@ class MainViewModel: ViewModel() {
             Log.e("PhotoSave", "Error saving photo: $filename", e)
             false
         }
+    }
+
+    fun deletePhotoFile(context: Context, fileName: String): Boolean {
+        val deleted = context.deleteFile(fileName)
+        if (deleted) {
+            loadPhotoFileNames(context)
+        }
+        return deleted
     }
 }

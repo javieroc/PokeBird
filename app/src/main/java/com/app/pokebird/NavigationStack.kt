@@ -8,15 +8,20 @@ import androidx.compose.runtime.getValue
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.app.pokebird.screens.ImageDetail
 import com.app.pokebird.screens.MainScreen
 import com.app.pokebird.screens.PhotoGallery
 import kotlinx.serialization.Serializable
+import java.io.File
 
 @Serializable
 object Main
 
 @Serializable
 object Gallery
+
+@Serializable
+data class PhotoDetail(val fileName: String)
 
 @Composable
 fun NavigationStack(
@@ -37,14 +42,32 @@ fun NavigationStack(
             )
         }
         composable<Gallery> {
-            val fileNames by viewModel.fileNames.collectAsState()
             PhotoGallery(
-                imageFileNames = fileNames,
+                viewModel = viewModel,
                 context = context,
                 onNavigateToMainScreen = {
                     navController.navigate(route = Main)
+                },
+                onNavigateToImageDetail = { fileName ->
+                    navController.navigate(PhotoDetail(fileName))
                 }
             )
         }
+        composable<PhotoDetail> { backStackEntry ->
+            val fileName = backStackEntry.arguments?.getString("fileName") ?: return@composable
+            val imageFile = File(context.filesDir, fileName)
+            ImageDetail(
+                imageFile = imageFile,
+                onDelete = {
+                    val deleted = viewModel.deletePhotoFile(context, fileName)
+                    if (deleted) {
+                        navController.popBackStack()
+                    }
+                },
+                onBack = { navController.popBackStack() },
+                onSpeak = { /* We'll implement this later */ }
+            )
+        }
+
     }
 }

@@ -19,8 +19,12 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.app.pokebird.ui.theme.PokeBirdTheme
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class MainActivity : ComponentActivity() {
@@ -67,26 +71,35 @@ class MainActivity : ComponentActivity() {
             object : OnImageCapturedCallback() {
                 override fun onCaptureSuccess(image: ImageProxy) {
                     super.onCaptureSuccess(image)
-                    val matrix = Matrix().apply {
-                        postRotate(image.imageInfo.rotationDegrees.toFloat())
+
+                    lifecycleScope.launch {
+                        val rotatedBitmap = withContext(Dispatchers.Default) {
+                            val matrix = Matrix().apply {
+                                postRotate(image.imageInfo.rotationDegrees.toFloat())
+                            }
+                            Bitmap.createBitmap(
+                                image.toBitmap(),
+                                0,
+                                0,
+                                image.width,
+                                image.height,
+                                matrix,
+                                true
+                            )
+                        }
+
+                        withContext(Dispatchers.IO) {
+                            onPhotoTaken(applicationContext, rotatedBitmap)
+                        }
+
+                        withContext(Dispatchers.Main) {
+                            Toast.makeText(
+                                applicationContext,
+                                "Picture taken!",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
                     }
-                    val rotatedBitmap = Bitmap.createBitmap(
-                        image.toBitmap(),
-                        0,
-                        0,
-                        image.width,
-                        image.height,
-                        matrix,
-                        true
-                    )
-
-                    onPhotoTaken(applicationContext, rotatedBitmap)
-
-                    Toast.makeText(
-                        applicationContext,
-                        "Picture taken!",
-                        Toast.LENGTH_SHORT
-                    ).show()
                 }
 
                 override fun onError(exception: ImageCaptureException) {
