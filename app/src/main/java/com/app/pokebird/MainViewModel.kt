@@ -12,20 +12,23 @@ import java.util.Date
 import java.util.Locale
 
 class MainViewModel: ViewModel() {
-
-    private val _bitmaps = MutableStateFlow<List<Bitmap>>(emptyList())
-
     private val _fileNames = MutableStateFlow<List<String>>(emptyList())
     val fileNames = _fileNames.asStateFlow()
+    private val _lastCapturedPhoto = MutableStateFlow<Bitmap?>(null)
+    val lastCapturedPhoto = _lastCapturedPhoto.asStateFlow()
 
     fun onTakePhoto(context: Context, bitmap: Bitmap) {
         val formatter = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault())
         val timestamp = formatter.format(Date())
         val filename = "photo_${timestamp}.png"
         if (saveBitmapToInternalStorage(context, bitmap, filename)) {
-            _bitmaps.value += bitmap
+            _lastCapturedPhoto.value = bitmap
             loadPhotoFileNames(context)
         }
+    }
+
+    fun clearLastCapturedPhoto() {
+        _lastCapturedPhoto.value = null
     }
 
     fun loadPhotoFileNames(context: Context) {

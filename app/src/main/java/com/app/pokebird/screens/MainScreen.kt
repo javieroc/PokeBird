@@ -1,6 +1,8 @@
 package com.app.pokebird.screens
 
+import android.graphics.Bitmap
 import androidx.camera.view.LifecycleCameraController
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -10,27 +12,26 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.app.pokebird.components.AnimatedCircleButton
 import com.app.pokebird.components.CameraPreview
 import com.app.pokebird.components.DPad
 
 
 @Composable
 fun MainScreen(
-        controller: LifecycleCameraController,
-        onNavigateToPhotoGallery: () -> Unit,
-        onCapturePhoto: () -> Unit,
+    controller: LifecycleCameraController,
+    lastPhoto: Bitmap?,
+    onNavigateToPhotoGallery: () -> Unit,
+    onCapturePhoto: () -> Unit,
+    onShowCameraPreview: () -> Unit
     ) {
     Column(
         modifier = Modifier
@@ -45,12 +46,20 @@ fun MainScreen(
                 .clip(RoundedCornerShape(16.dp))
                 .border(20.dp, Color.LightGray, RoundedCornerShape(16.dp))
         ) {
-            CameraPreview(
-                controller = controller,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .clip(RoundedCornerShape(16.dp))
-            )
+            if (lastPhoto != null) {
+                Image(
+                    bitmap = lastPhoto.asImageBitmap(),
+                    contentDescription = "Last captured photo",
+                    modifier = Modifier.fillMaxSize()
+                )
+            } else {
+                CameraPreview(
+                    controller = controller,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .clip(RoundedCornerShape(16.dp))
+                )
+            }
         }
 
         Row(
@@ -61,7 +70,7 @@ fun MainScreen(
             verticalAlignment = Alignment.CenterVertically
         ) {
             DPad(onDirection = { direction ->
-                // Handle direction input
+                if (direction == "UP") onShowCameraPreview()
             })
 
             Column(
@@ -70,28 +79,16 @@ fun MainScreen(
                 verticalArrangement = Arrangement.spacedBy(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Button(
-                    onClick = { onCapturePhoto() },
-                    shape = CircleShape,
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFF00C3E3),
-                        contentColor = Color.White
-                    ),
-                    modifier = Modifier.size(64.dp)
-                ) {
-                    Text("A", fontSize = 30.sp)
-                }
-                Button(
-                    onClick = { onNavigateToPhotoGallery() },
-                    shape = CircleShape,
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFF414548),
-                        contentColor = Color.White
-                    ),
-                    modifier = Modifier.size(64.dp)
-                ) {
-                    Text("B", fontSize = 30.sp)
-                }
+                AnimatedCircleButton(
+                    label = "A",
+                    backgroundColor = Color(0xFF00C3E3),
+                    onClick = onCapturePhoto
+                )
+                AnimatedCircleButton(
+                    label = "B",
+                    backgroundColor = Color(0xFF414548),
+                    onClick = onNavigateToPhotoGallery
+                )
             }
         }
     }

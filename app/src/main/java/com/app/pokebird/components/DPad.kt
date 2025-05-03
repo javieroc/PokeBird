@@ -20,7 +20,7 @@ fun DPad(onDirection: (String) -> Unit) {
     ) {
         // Up
         Button(
-            onClick = { onDirection("Up") },
+            onClick = { onDirection("UP") },
             modifier = Modifier
                 .size(48.dp, 40.dp)
                 .align(Alignment.TopCenter),
@@ -30,7 +30,7 @@ fun DPad(onDirection: (String) -> Unit) {
 
         // Down
         Button(
-            onClick = { onDirection("Down") },
+            onClick = { onDirection("DOWN") },
             modifier = Modifier
                 .size(48.dp, 40.dp)
                 .align(Alignment.BottomCenter),
@@ -40,7 +40,7 @@ fun DPad(onDirection: (String) -> Unit) {
 
         // Left
         Button(
-            onClick = { onDirection("Left") },
+            onClick = { onDirection("LEFT") },
             modifier = Modifier
                 .size(40.dp, 48.dp)
                 .align(Alignment.CenterStart),
@@ -50,7 +50,7 @@ fun DPad(onDirection: (String) -> Unit) {
 
         // Right
         Button(
-            onClick = { onDirection("Right") },
+            onClick = { onDirection("RIGHT") },
             modifier = Modifier
                 .size(40.dp, 48.dp)
                 .align(Alignment.CenterEnd),

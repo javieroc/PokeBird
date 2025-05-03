@@ -55,7 +55,7 @@ class MainActivity : ComponentActivity() {
                     viewModel,
                     applicationContext,
                     onCapturePhoto = {
-                        takePhoto(controller, viewModel::onTakePhoto)
+                        takePhoto(controller, viewModel)
                     }
                 )
             }
@@ -64,7 +64,7 @@ class MainActivity : ComponentActivity() {
 
     private fun takePhoto(
         controller: LifecycleCameraController,
-        onPhotoTaken: (context: Context, Bitmap) -> Unit,
+        viewModel: MainViewModel,
     ) {
         controller.takePicture(
             ContextCompat.getMainExecutor(applicationContext),
@@ -88,9 +88,7 @@ class MainActivity : ComponentActivity() {
                             )
                         }
 
-                        withContext(Dispatchers.IO) {
-                            onPhotoTaken(applicationContext, rotatedBitmap)
-                        }
+                        viewModel.onTakePhoto(applicationContext, rotatedBitmap)
 
                         withContext(Dispatchers.Main) {
                             Toast.makeText(

@@ -33,12 +33,16 @@ fun NavigationStack(
     val navController = rememberNavController()
     NavHost(navController, startDestination = Main) {
         composable<Main> {
+            val lastCaptured by viewModel.lastCapturedPhoto.collectAsState()
+
             MainScreen(
                 controller,
+                lastPhoto = lastCaptured,
                 onNavigateToPhotoGallery = {
                     navController.navigate(route = Gallery)
                 },
                 onCapturePhoto,
+                onShowCameraPreview = { viewModel.clearLastCapturedPhoto() }
             )
         }
         composable<Gallery> {
