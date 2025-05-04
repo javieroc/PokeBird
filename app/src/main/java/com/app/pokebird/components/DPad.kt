@@ -19,7 +19,6 @@ fun DPad(onDirection: (Direction) -> Unit) {
         modifier = Modifier
             .size(140.dp)
     ) {
-        // Up
         Button(
             onClick = { onDirection(Direction.Up) },
             modifier = Modifier
@@ -29,7 +28,6 @@ fun DPad(onDirection: (Direction) -> Unit) {
             colors = ButtonDefaults.buttonColors(Color.DarkGray)
         ) {}
 
-        // Down
         Button(
             onClick = { onDirection(Direction.Down) },
             modifier = Modifier
@@ -39,7 +37,6 @@ fun DPad(onDirection: (Direction) -> Unit) {
             colors = ButtonDefaults.buttonColors(Color.DarkGray)
         ) {}
 
-        // Left
         Button(
             onClick = { onDirection(Direction.Left) },
             modifier = Modifier
@@ -49,7 +46,6 @@ fun DPad(onDirection: (Direction) -> Unit) {
             colors = ButtonDefaults.buttonColors(Color.DarkGray)
         ) {}
 
-        // Right
         Button(
             onClick = { onDirection(Direction.Right) },
             modifier = Modifier
@@ -59,7 +55,6 @@ fun DPad(onDirection: (Direction) -> Unit) {
             colors = ButtonDefaults.buttonColors(Color.DarkGray)
         ) {}
 
-        // Center (just a visual piece, non-clickable)
         Box(
             modifier = Modifier
                 .size(40.dp)

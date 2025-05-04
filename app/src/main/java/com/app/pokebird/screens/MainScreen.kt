@@ -1,7 +1,5 @@
 package com.app.pokebird.screens
 
-import android.content.Context
-import android.graphics.Bitmap
 import androidx.camera.view.LifecycleCameraController
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border

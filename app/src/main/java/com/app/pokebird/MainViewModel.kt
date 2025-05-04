@@ -15,7 +15,6 @@ class MainViewModel: ViewModel() {
     private val _fileNames = MutableStateFlow<List<String>>(emptyList())
     val fileNames = _fileNames.asStateFlow()
     private val _lastCapturedPhoto = MutableStateFlow<Bitmap?>(null)
-    val lastCapturedPhoto = _lastCapturedPhoto.asStateFlow()
 
     fun onTakePhoto(context: Context, bitmap: Bitmap) {
         val formatter = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault())
