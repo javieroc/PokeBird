@@ -11,16 +11,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.app.pokebird.screens.Direction
 
 @Composable
-fun DPad(onDirection: (String) -> Unit) {
+fun DPad(onDirection: (Direction) -> Unit) {
     Box(
         modifier = Modifier
             .size(140.dp)
     ) {
         // Up
         Button(
-            onClick = { onDirection("UP") },
+            onClick = { onDirection(Direction.Up) },
             modifier = Modifier
                 .size(48.dp, 40.dp)
                 .align(Alignment.TopCenter),
@@ -30,7 +31,7 @@ fun DPad(onDirection: (String) -> Unit) {
 
         // Down
         Button(
-            onClick = { onDirection("DOWN") },
+            onClick = { onDirection(Direction.Down) },
             modifier = Modifier
                 .size(48.dp, 40.dp)
                 .align(Alignment.BottomCenter),
@@ -40,7 +41,7 @@ fun DPad(onDirection: (String) -> Unit) {
 
         // Left
         Button(
-            onClick = { onDirection("LEFT") },
+            onClick = { onDirection(Direction.Left) },
             modifier = Modifier
                 .size(40.dp, 48.dp)
                 .align(Alignment.CenterStart),
@@ -50,7 +51,7 @@ fun DPad(onDirection: (String) -> Unit) {
 
         // Right
         Button(
-            onClick = { onDirection("RIGHT") },
+            onClick = { onDirection(Direction.Right) },
             modifier = Modifier
                 .size(40.dp, 48.dp)
                 .align(Alignment.CenterEnd),

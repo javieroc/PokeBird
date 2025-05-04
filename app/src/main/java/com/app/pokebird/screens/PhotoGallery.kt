@@ -1,6 +1,5 @@
 package com.app.pokebird.screens
 
-import android.content.Context
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,6 +20,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.app.pokebird.MainViewModel
@@ -30,10 +30,10 @@ import java.io.File
 @Composable
 fun PhotoGallery(
     viewModel: MainViewModel,
-    context: Context,
     onNavigateToMainScreen: () -> Unit,
     onNavigateToImageDetail: (fileName: String) -> Unit,
 ) {
+    val context = LocalContext.current
     val fileNames by viewModel.fileNames.collectAsState()
 
     Surface(
